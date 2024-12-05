@@ -5,7 +5,7 @@ function CartWidget() {
     <div className="carrito">
        
         <TiShoppingCart size="40px" color="white"/>
-        <span className="badge">6</span>
+        <span className="badge">11</span>
     </div>
   )
 }
