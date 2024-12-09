@@ -1,13 +1,24 @@
 import { TiShoppingCart } from "react-icons/ti";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { ItemsContext } from "../contexts/ItemsContext";
 
-function CartWidget() {
+
+
+export const CartWidget = () => {
+  const { items } = useContext(ItemsContext);
+  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+
   return (
-    <div className="carrito">
-       
-        <TiShoppingCart size="40px" color="white"/>
-        <span className="badge">11</span>
-    </div>
-  )
-}
+    <>
+      <Link to="/checkout">
+        <div className="carrito">
+          <TiShoppingCart size="40px" color="white" />
+          {totalItems > 0 && <span className="badge">{totalItems}</span>}
+        </div>
+      </Link>
+    </>
+  );
+};
 
 export default CartWidget

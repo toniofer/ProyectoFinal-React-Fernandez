@@ -1,11 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import { Provider } from "./components/contexts/ItemsContext.jsx";
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-
-/* const firebaseConfig = {
+const firebaseConfig = {
 
     apiKey: "AIzaSyCR4_EfDfYQvT8MozIrxakleMs7XyMfwJA",  
     authDomain: "af-systems-coderhouse.firebaseapp.com",  
@@ -17,10 +14,7 @@ import { initializeApp } from "firebase/app";
   
   
   // Initialize Firebase  
-initializeApp(firebaseConfig); */
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <Provider>
-        <App />
-    </Provider>
-);
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+//export const provider = new GoogleAuthProvider();

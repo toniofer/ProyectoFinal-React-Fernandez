@@ -1,4 +1,21 @@
+import { ItemCount } from "./ItemCount";
+import { useEffect, useState, useContext } from "react";
+import { ItemsContext } from "../contexts/ItemsContext";
+
 const ItemDetail = ({ product }) => {
+
+  const [items, setItems] = useState(null); //////////////////
+  const { addItem } = useContext(ItemsContext);
+
+  const onAdd = (count) => {
+    Swal.fire("El producto se agregó al carrito");
+    addItem({ ...items, quantity: count });
+  };
+
+  
+
+
+
   return (
     <div className="card-item-detail">
       <h1>{product.name}</h1>
@@ -8,6 +25,9 @@ const ItemDetail = ({ product }) => {
       <div className="info-card">
         <h4>{product.description}</h4>
         <h3>U$S {product.price}</h3>
+        <h4>Stock disponible: {product.stock}</h4>      
+
+        <ItemCount stock={product.stock} onAdd={onAdd} />
       </div>
     </div>
   )
