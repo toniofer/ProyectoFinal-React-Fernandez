@@ -3,7 +3,7 @@ import { db } from "./config.js";
 import { products } from "../data/getProducts.js";
 
 const uploadProductos = async () => {
-    const productosRef = collection(db, "products");
+    const productosRef = collection(db, "items");
 
     for (const product of products) {
         try {

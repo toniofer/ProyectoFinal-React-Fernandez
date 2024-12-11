@@ -7,21 +7,20 @@ import { db } from "../../firebase/config";
 
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
-  //const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const { idCategory } = useParams();
   
-  const validCategories = ["procesadores", "motherboards", "rams"];
 
   useEffect(() => {
     
-    const refCollection = !idCategory ? query(collection(db, "products"), orderBy("code"))
-      : query(collection(db, "products"), where("category", "==", idCategory), orderBy("price"));
+    const refCollection = !idCategory ? query(collection(db, "items"), orderBy("code"))
+      : query(collection(db, "items"), where("category", "==", idCategory), orderBy("price"));
     
     getDocs(refCollection)
       .then((snapshot) => {
         setProducts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       })
-      //.finally(() => setLoading(false));
+      .finally(() => setLoading(false));
     }, [idCategory]);
 
   return (

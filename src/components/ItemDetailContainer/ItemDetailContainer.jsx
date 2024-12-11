@@ -10,14 +10,14 @@ import { db } from "../../firebase/config";
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState({})
   const { idProduct } = useParams()
-  const { addItem } = useContext(ItemsContext);
+  //const { addItem } = useContext(ItemsContext);
   //const [items, setItems] = useState(null);
   const [loading, setLoading] = useState(true);
   const value = useContext(ItemsContext);
 
   useEffect(()=>{
     
-    const refDoc = doc(db, "products", idProduct);
+    const refDoc = doc(db, "items", idProduct);
 
     getDoc(refDoc)
     .then((snapshot) => {
@@ -35,9 +35,7 @@ const ItemDetailContainer = () => {
     return <h5>Artículo no encontrado</h5>;
   }
 
-  console.log(product);
-
-  return (
+ return (
     <div className="item-detail-container">
       <ItemDetail product={product} />
     </div>

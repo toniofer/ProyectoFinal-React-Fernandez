@@ -4,17 +4,12 @@ import { ItemsContext } from "../contexts/ItemsContext";
 
 const ItemDetail = ({ product }) => {
 
-  const [items, setItems] = useState(null); //////////////////
   const { addItem } = useContext(ItemsContext);
 
   const onAdd = (count) => {
     Swal.fire("El producto se agregó al carrito");
-    addItem({ ...items, quantity: count });
+    addItem({ ...product, quantity: count });
   };
-
-  
-
-
 
   return (
     <div className="card-item-detail">
