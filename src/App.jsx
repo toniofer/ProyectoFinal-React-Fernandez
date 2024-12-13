@@ -1,10 +1,10 @@
-import Navbar from './components/navbar/Navbar'
+import React from 'react';
+import Navbar from './components/navbar/Navbar';
 import ItemListContainer from './components/itemListContainer/ItemListContainer'
-import ItemDetailContainer from "./components/itemDetailContainer/ItemDetailContainer";
+import ItemDetailContainer from './components/itemDetailContainer/ItemDetailContainer';
 import Page404 from './components/page404/Page404';
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Checkout from "./components/checkout/Checkout"
-
+import Checkout from './components/checkout/checkout';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
 

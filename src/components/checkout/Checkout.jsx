@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { ImBin } from "react-icons/im";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import "./checkout.css";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialValues = {
     nombre: "",
@@ -25,9 +25,9 @@ const mostrarMensajeConBoton = (texto, funcion) => {
         confirmButtonColor: "#7e0303",
         confirmButtonText: "Aceptar"
     }).then((result) => {
-        if (result.isConfirmed){
+        if (result.isConfirmed) {
             funcion();
-        }        
+        }
     });
 }
 
@@ -48,17 +48,56 @@ export const Checkout = () => {
 
     const handleChange = (e) => {
         setBuyer((prev) => ({
-          ...prev,
-          [e.target.name]: e.target.value,
+            ...prev,
+            [e.target.name]: e.target.value,
         }));
-      };
+    };
 
+    const updateStock = async (itemId, quantity) => {
+        const docRef = doc(db, "items", itemId);
+        
+        try {
+            // Obtener el documento actual
+            const docSnap = await getDoc(docRef);
+    
+            if (docSnap.exists()) {
+                const currentStock = docSnap.data().stock; // Obtener el stock actual
+                const newStock = currentStock - quantity;
+    
+                // Actualizar el stock
+                await updateDoc(docRef, { stock: newStock });
+                console.log(`Stock actualizado para el item ${itemId}`);
+            } else {
+                console.log(`El documento con ID ${itemId} no existe.`);
+            }
+        } catch (error) {
+            console.error("Error al actualizar el stock:", error);
+        }
+    };
+
+    const updateStocks = async () => {
+        try {
+            await Promise.all(
+                items.map((it) => updateStock(it.id, it.quantity))
+            );
+            console.log("Todos los stocks actualizados correctamente");
+        } catch (error) {
+            console.error("Error al actualizar stocks:", error);
+        }
+    };
+    
+
+
+    const itemsSinStock = items.map(({ stock, ...itemSinStock }) => itemSinStock);
+
+    /////////////////////////////////////////////////
     const handleSubmit = async (e) => {
-        e.preventDefault();        
+        
+        e.preventDefault();
 
         const order = {
             buyer: buyer,
-            items: items,
+            items: itemsSinStock,
             total: total,
         };
 
@@ -68,8 +107,10 @@ export const Checkout = () => {
             const docRef = await addDoc(orderCollection, order);
             if (docRef.id) {
                 setOrderSuccess(`Su compra ha sido procesada correctamente`);
+                updateStocks();
                 const mensaje = `ID de la orden: ${docRef.id}`;
-                mostrarMensajeConBoton(mensaje, finalizarCompra)
+                mostrarMensajeConBoton(mensaje, finalizarCompra);
+
             }
         } catch (error) {
             console.error("Error al procesar la compra: ", error);
@@ -78,7 +119,12 @@ export const Checkout = () => {
     };
 
     if (!items.length && !orderSuccess)
-        return <h2>El carrito está vacío</h2>;
+        return (
+            <div className="div-cart-empty">
+                <h2>El carrito está vacío</h2>
+                <Link to="/" className="btn-regresar">Regresar</Link>            
+            </div>
+        );
 
     return (
         <div className="div-checkout">
