@@ -1,3 +1,4 @@
+import React from 'react';
 import { ItemCount } from "./ItemCount";
 import { useEffect, useState, useContext } from "react";
 import { ItemsContext } from "../contexts/ItemsContext";

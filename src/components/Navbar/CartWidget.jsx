@@ -1,3 +1,4 @@
+import React from 'react';
 import { TiShoppingCart } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import { useContext } from "react";

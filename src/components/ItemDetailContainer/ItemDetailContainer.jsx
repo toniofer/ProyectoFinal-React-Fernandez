@@ -1,17 +1,15 @@
-import { useState, useEffect, useContext } from "react"
-import ItemDetail from "./ItemDetail"
-import { useParams } from "react-router-dom"
-import "./itemDetailContainer.css"
+import React from 'react';
+import { useState, useEffect, useContext } from "react";
+import ItemDetail from "./ItemDetail";
+import { useParams } from "react-router-dom";
+import "./itemDetailContainer.css";
 import { doc, getDoc } from "firebase/firestore";
-import { ItemCount } from "./ItemCount";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { db } from "../../firebase/config";
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState({})
   const { idProduct } = useParams()
-  //const { addItem } = useContext(ItemsContext);
-  //const [items, setItems] = useState(null);
   const [loading, setLoading] = useState(true);
   const value = useContext(ItemsContext);
 
